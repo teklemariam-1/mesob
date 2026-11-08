@@ -1,0 +1,19 @@
+# Build output
+/target/
+**/bin/
+**/obj/
+android/.gradle/
+android/**/build/
+android/local.properties
+android/core/src/main/jniLibs/
+
+# Development keys: never commit, never ship
+/lab/
+
+# IDE
+.vs/
+.idea/
+*.user
+
+# Local demo data (made from personal media)
+/demo/

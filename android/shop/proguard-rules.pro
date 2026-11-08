@@ -1,0 +1,3 @@
+-keep class com.mesob.core.MesobNative { *; }
+-keep class fi.iki.elonen.** { *; }
+-dontwarn fi.iki.elonen.**

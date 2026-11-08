@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shops serve plain HTTP on their own Wi-Fi. Nothing secret travels: files are encrypted and
+     licenses are sealed to one device. The app itself only connects to local addresses. -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

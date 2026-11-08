@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RootNamespace>Mesob.Interop</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- The Rust core: cargo build release of the mesob-ffi crate. -->
+    <None Include="..\..\target\release\mesob.dll" Link="mesob.dll" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\target\release\mesob.dll')" />
+    <!-- Lab builds only: the development vendor key. Production cores have the key compiled in and ignore this file. -->
+    <None Include="..\..\lab\vendor\vendor.pub" Link="vendor.pub" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\lab\vendor\vendor.pub')" />
+  </ItemGroup>
+</Project>

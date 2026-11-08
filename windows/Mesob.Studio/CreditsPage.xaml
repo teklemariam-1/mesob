@@ -1,0 +1,139 @@
+<Page
+    x:Class="Mesob.Studio.CreditsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mesob.Studio"
+    Background="Transparent">
+    <Grid Padding="40,28,40,24" RowSpacing="16" ColumnSpacing="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="360" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.ColumnSpan="2" Spacing="2">
+            <TextBlock Text="MONEY" Style="{StaticResource Eyebrow}" />
+            <TextBlock Text="Credits and codes" Style="{StaticResource PageTitle}" />
+            <TextBlock x:Name="Capacity" Style="{StaticResource Secondary}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Spacing="16">
+                <Border Style="{StaticResource Card}">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Border Style="{StaticResource IconBadge}"><FontIcon Glyph="&#xE719;" FontSize="14" /></Border>
+                            <TextBlock Text="Make a credit pack" Style="{StaticResource SectionTitle}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource SmallSecondary}"
+                                   Text="Packs travel to the shop locked, on its next sync stick. Make one ahead so the shop never waits for a stick; unlock it by phone once the distributor pays." />
+                        <ComboBox x:Name="Shop" Header="Shop" HorizontalAlignment="Stretch" DisplayMemberPath="Text" />
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <NumberBox x:Name="Size" Header="Licenses" Value="200" Minimum="1" Maximum="100000" SpinButtonPlacementMode="Compact" ValueChanged="Pack_ValueChanged" />
+                            <NumberBox x:Name="Wholesale" Grid.Column="1" Header="Nakfa each" Value="60" Minimum="0" SpinButtonPlacementMode="Compact" ValueChanged="Pack_ValueChanged" />
+                        </Grid>
+                        <TextBlock x:Name="PackValue" Style="{StaticResource SmallSecondary}" />
+                        <Button Content="Make pack" Click="MakePack_Click" HorizontalAlignment="Stretch" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel Spacing="12">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Border Style="{StaticResource IconBadge}"><FontIcon Glyph="&#xE8BD;" FontSize="14" /></Border>
+                            <TextBlock Text="Daily report code" Style="{StaticResource SectionTitle}" VerticalAlignment="Center" />
+                        </StackPanel>
+                        <TextBlock TextWrapping="Wrap" Style="{StaticResource SmallSecondary}"
+                                   Text="Shops send a signed 31-character code each evening by SMS or phone. It proves the day's sales count and cash before the sales log arrives." />
+                        <ComboBox x:Name="ReportShop" Header="Shop" HorizontalAlignment="Stretch" DisplayMemberPath="Text" />
+                        <TextBox x:Name="ReportCode" Header="Code" FontFamily="{StaticResource CodeFont}" PlaceholderText="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX-XXX" />
+                        <Button Content="Check code" Click="Report_Click" HorizontalAlignment="Stretch" />
+                        <InfoBar x:Name="ReportOut" IsOpen="False" IsClosable="True" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Card}" Padding="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Text="Credit packs" Style="{StaticResource SectionTitle}" Margin="24,18,24,8" />
+                <Grid Grid.Row="1" Padding="24,8" ColumnSpacing="12" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource DividerStrokeColorDefaultBrush}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="96" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="104" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="PACK" Style="{StaticResource ColumnHeader}" />
+                    <TextBlock Grid.Column="1" Text="USED" Style="{StaticResource ColumnHeader}" />
+                    <TextBlock Grid.Column="2" Text="VALUE" Style="{StaticResource ColumnHeader}" HorizontalAlignment="Right" />
+                    <TextBlock Grid.Column="3" Text="STATUS" Style="{StaticResource ColumnHeader}" />
+                </Grid>
+                <ListView x:Name="Packs" Grid.Row="2" SelectionMode="None" Padding="8,4">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="local:PackRow">
+                            <Grid Padding="4,10" ColumnSpacing="12">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="130" />
+                                    <ColumnDefinition Width="96" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="104" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center" Spacing="2" ToolTipService.ToolTip="{x:Bind SerialsTip}">
+                                    <TextBlock Text="{x:Bind IdLabel}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Text="{x:Bind ShopLabel}" Style="{StaticResource SmallSecondary}" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="4">
+                                    <ProgressBar Value="{x:Bind UsagePercent}" Maximum="100" />
+                                    <TextBlock Text="{x:Bind UsageLabel}" Style="{StaticResource SmallSecondary}" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="2" Text="{x:Bind ValueLabel}" VerticalAlignment="Center" HorizontalAlignment="Right" FontWeight="SemiBold" />
+                                <Grid Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left">
+                                    <Border Padding="10,3" CornerRadius="10" Background="{ThemeResource MesobGoodBackground}" Visibility="{x:Bind UnlockedVisibility}">
+                                        <TextBlock Text="Paid" FontSize="12" Foreground="{ThemeResource MesobGoodBrush}" FontWeight="SemiBold" />
+                                    </Border>
+                                    <Border Padding="10,3" CornerRadius="10" Background="{ThemeResource MesobWarnBackground}" Visibility="{x:Bind LockedVisibility}">
+                                        <TextBlock Text="Locked" FontSize="12" Foreground="{ThemeResource MesobWarnBrush}" FontWeight="SemiBold" />
+                                    </Border>
+                                </Grid>
+                                <Grid Grid.Column="4" VerticalAlignment="Center">
+                                    <Button Content="Unlock…" Click="{x:Bind Unlock}" HorizontalAlignment="Stretch"
+                                            Style="{StaticResource AccentButtonStyle}" Visibility="{x:Bind LockedVisibility}" />
+                                    <Button Content="Show code" Click="{x:Bind ShowCode}" HorizontalAlignment="Stretch"
+                                            Visibility="{x:Bind UnlockedVisibility}" />
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackPanel x:Name="Empty" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="8" Visibility="Collapsed">
+                    <FontIcon Glyph="&#xE719;" FontSize="36" Opacity="0.5" />
+                    <TextBlock Text="No credit packs yet" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                    <TextBlock Text="A shop can only sell licenses from packs you make and unlock." Style="{StaticResource Secondary}" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <ContentDialog x:Name="UnlockDialog" Title="Cash received" PrimaryButtonText="Record cash and show code" CloseButtonText="Cancel" DefaultButton="Primary">
+            <StackPanel Spacing="14" Width="420">
+                <TextBlock x:Name="UnlockInfo" TextWrapping="Wrap" Style="{StaticResource Secondary}" />
+                <NumberBox x:Name="Cash" Header="Cash received (Nakfa)" Minimum="0" SpinButtonPlacementMode="Inline" />
+                <TextBox x:Name="Note" Header="Note (who paid, receipt number)" />
+            </StackPanel>
+        </ContentDialog>
+    </Grid>
+</Page>

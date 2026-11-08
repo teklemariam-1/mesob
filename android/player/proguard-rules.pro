@@ -1,0 +1,3 @@
+-keep class com.mesob.core.MesobNative { *; }
+-repackageclasses ''
+-allowaccessmodification

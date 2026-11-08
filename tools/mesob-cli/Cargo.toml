@@ -1,0 +1,16 @@
+[package]
+name = "mesob-cli"
+description = "Mesob development toolkit: plays vendor, studio, shop and customer device from the command line."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "mesob-lab"
+path = "src/main.rs"
+
+[dependencies]
+mesob-core = { path = "../../core/mesob-core" }
+clap = { version = "4", features = ["derive"] }
+hex = "0.4"

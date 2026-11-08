@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- End-to-end test of the whole chain without any UI: the real Studio Control logic, the shop
+       protocol (hardware-key path, as on Android Keystore), sync sticks, codes, the sales log,
+       fraud alerts and Player decryption. Run: dotnet run -c Release -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <Platforms>x64</Platforms>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>false</SelfContained>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.11" />
+    <ProjectReference Include="..\Mesob.Interop\Mesob.Interop.csproj" />
+    <Compile Include="..\Mesob.Studio\Studio.cs" Link="Studio\Studio.cs" />
+    <Compile Include="..\Mesob.Studio\StudioDb.cs" Link="Studio\StudioDb.cs" />
+    <None Include="..\..\lab\vendor\vendor.pub" Link="vendor.pub" CopyToOutputDirectory="PreserveNewest" Condition="Exists('..\..\lab\vendor\vendor.pub')" />
+  </ItemGroup>
+</Project>

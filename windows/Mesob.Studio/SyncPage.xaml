@@ -1,0 +1,99 @@
+<Page
+    x:Class="Mesob.Studio.SyncPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mesob.Studio"
+    Background="Transparent">
+    <Page.Resources>
+        <DataTemplate x:Key="ResultItem" x:DataType="local:StepResult">
+            <Grid ColumnSpacing="10" Padding="0,4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <FontIcon Glyph="{x:Bind Glyph}" FontSize="14" Foreground="{ThemeResource MesobGoodBrush}" Visibility="{x:Bind OkVisibility}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                <FontIcon Glyph="{x:Bind Glyph}" FontSize="14" Foreground="{ThemeResource MesobBadBrush}" Visibility="{x:Bind BadVisibility}" VerticalAlignment="Top" Margin="0,2,0,0" />
+                <TextBlock Grid.Column="1" Text="{x:Bind Text}" TextWrapping="Wrap" IsTextSelectionEnabled="True" />
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+    <ScrollViewer>
+        <StackPanel Padding="40,28,40,36" Spacing="16" MaxWidth="980" HorizontalAlignment="Left">
+            <StackPanel Spacing="2">
+                <TextBlock Text="OFFLINE TRANSPORT" Style="{StaticResource Eyebrow}" />
+                <TextBlock Text="Sync sticks" Style="{StaticResource PageTitle}" />
+                <TextBlock Style="{StaticResource Secondary}" TextWrapping="Wrap"
+                           Text="One USB stick or hard drive carries everything both ways. Everything on it is signed or encrypted, so anyone can carry it." />
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}">
+                <Grid ColumnSpacing="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Border Style="{StaticResource IconBadge}"><FontIcon Glyph="&#xE88E;" FontSize="16" /></Border>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                        <TextBlock Text="1  ·  Choose the stick" FontWeight="SemiBold" />
+                        <TextBlock x:Name="Stick" Text="No stick chosen" Style="{StaticResource SmallSecondary}" />
+                    </StackPanel>
+                    <Button Grid.Column="2" Content="Choose stick…" Click="Pick_Click" VerticalAlignment="Center" />
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="12">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border Style="{StaticResource IconBadge}"><FontIcon Glyph="&#xE896;" FontSize="16" /></Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="2  ·  Bring back sales" FontWeight="SemiBold" />
+                            <TextBlock Style="{StaticResource SmallSecondary}" TextWrapping="Wrap"
+                                       Text="Reads each shop's signed sales log. Broken chains, forged entries and reused serials raise an alert." />
+                        </StackPanel>
+                        <Button x:Name="ReadButton" Grid.Column="2" Content="Read sales logs" Click="Read_Click" VerticalAlignment="Center" IsEnabled="False" />
+                    </Grid>
+                    <ProgressBar x:Name="ReadBusy" IsIndeterminate="True" Visibility="Collapsed" />
+                    <ItemsControl x:Name="ReadResults" ItemTemplate="{StaticResource ResultItem}" />
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <StackPanel Spacing="12">
+                    <Grid ColumnSpacing="16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Border Style="{StaticResource IconBadge}"><FontIcon Glyph="&#xE898;" FontSize="16" /></Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                            <TextBlock Text="3  ·  Send out titles and credits" FontWeight="SemiBold" />
+                            <TextBlock Style="{StaticResource SmallSecondary}" TextWrapping="Wrap"
+                                       Text="Writes the signed catalog, encrypted titles, title keys sealed to each shop, and its credit packs." />
+                        </StackPanel>
+                        <Button x:Name="WriteButton" Grid.Column="2" Content="Write for selected shops" Click="Write_Click" VerticalAlignment="Center"
+                                Style="{StaticResource AccentButtonStyle}" IsEnabled="False" />
+                    </Grid>
+                    <ListView x:Name="Shops" SelectionMode="Multiple" MaxHeight="280" SelectionChanged="Shops_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="local:ShopRow">
+                                <StackPanel Padding="0,6">
+                                    <TextBlock FontWeight="SemiBold"><Run Text="Shop " /><Run Text="{x:Bind IdLabel}" /><Run Text="  ·  " /><Run Text="{x:Bind Name}" /></TextBlock>
+                                    <TextBlock Text="{x:Bind Town}" Style="{StaticResource SmallSecondary}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <ProgressBar x:Name="WriteBusy" IsIndeterminate="True" Visibility="Collapsed" />
+                    <ItemsControl x:Name="WriteResults" ItemTemplate="{StaticResource ResultItem}" />
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
